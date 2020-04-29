@@ -9,9 +9,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Файлы ресурсов">
+    <Filter Include="Chess">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Chess\Исходные файлы">
+      <UniqueIdentifier>{ed62f1c0-c89e-41dc-9e83-837559886211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chess\Файлы  заголовков">
+      <UniqueIdentifier>{b98d3979-8330-4299-bb34-d0733f4e7db8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,6 +30,9 @@
     <ClCompile Include="pos.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="pawn.cpp">
+      <Filter>Chess\Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Desk.h">
@@ -31,6 +40,12 @@
     </ClInclude>
     <ClInclude Include="pos.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="pawn.h">
+      <Filter>Chess\Файлы  заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="piece.h">
+      <Filter>Chess\Файлы  заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

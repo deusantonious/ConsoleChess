@@ -87,6 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,13 +141,15 @@
   <ItemGroup>
     <ClCompile Include="Desk.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pawn.cpp" />
     <ClCompile Include="pos.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="piece.h" />
     <ClInclude Include="Desk.h" />
+    <ClInclude Include="pawn.h" />
     <ClInclude Include="pos.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
