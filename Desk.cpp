@@ -20,14 +20,22 @@ Desk::Desk()
 	for (int i = 0; i < 8; i++) {
 		desk[1][i] = new pawn('B',pos(i+1,2));
 	}
-		
-	;
-
 	//creating white pawns
 	for (int i = 0; i < 8; i++) {
 		desk[6][i] = new pawn('W', pos(i + 1,7));
 	}
-	;
+	//creating black rocks
+	desk[0][0] = new rock('B', pos(1, 1));
+	desk[0][7] = new rock('B', pos(8, 1));
+	//creating white rocks
+	desk[7][0] = new rock('W', pos(1, 8));
+	desk[7][7] = new rock('W', pos(8, 8));
+	//creating black knigts
+	desk[0][1] = new Knight('B', pos(2, 1));
+	desk[0][6] = new Knight('B', pos(7, 1));
+	//creating white knigts
+	desk[7][1] = new Knight('W', pos(2, 8));
+	desk[7][6] = new Knight('W', pos(7, 8));
 }
 
 Desk::~Desk()

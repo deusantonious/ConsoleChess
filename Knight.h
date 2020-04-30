@@ -3,15 +3,13 @@
 #include <vector>
 #include "piece.h"
 #include "pos.h"
-class pawn :
+class Knight :
 	public piece
 {
 public:
-	pawn(char color, pos position) : piece(color,position) { DidMove = false; };
+	Knight(char color, pos position) : piece(color, position) {}
 	std::vector<pos> ways(piece*** desk);
 	void Display() override;
-	bool move(piece*** desk, pos destination) override;
 private:
-	bool DidMove;
 };
 

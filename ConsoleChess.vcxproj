@@ -140,15 +140,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Desk.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pawn.cpp" />
+    <ClCompile Include="piece.cpp" />
     <ClCompile Include="pos.cpp" />
+    <ClCompile Include="rock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="piece.h" />
     <ClInclude Include="Desk.h" />
     <ClInclude Include="pawn.h" />
     <ClInclude Include="pos.h" />
+    <ClInclude Include="rock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

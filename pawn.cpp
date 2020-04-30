@@ -2,14 +2,6 @@
 //i need void that create all pos thet i can to do and ill find in IsValid;
 
 // all ways to move void
-bool pawn::IsValid(piece*** desk, pos destination)
-{
-	std::vector <pos> Aviable = this->ways(desk);
-	for (pos i : Aviable)
-		if (i == destination) return true;
-	return false;
-}
-
 std::vector<pos> pawn::ways(piece*** desk)
 {
 	std::vector<pos> Ways;

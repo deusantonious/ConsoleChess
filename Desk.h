@@ -6,6 +6,8 @@
 #include "pos.h"
 #include "piece.h"
 #include "pawn.h"
+#include "rock.h"
+#include "Knight.h"
 class Desk
 {
 private:
