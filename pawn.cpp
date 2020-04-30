@@ -47,10 +47,18 @@ void pawn::Display()
 bool pawn::move(piece*** desk, pos destination)
 {
 	if (IsValid(desk, destination)) {
+		DidMoveFirst = DidMove;
 		DidMove = true;
 		desk[destination.number][destination.letter] = this;
 		desk[position.number][position.letter] = nullptr;
-		position = destination;
 	}
 	else throw std::exception("Your turn is invalid!\n");
+	lastPosition = position;
+	position = destination;
+}
+
+void pawn::undoMove()
+{
+	DidMove = DidMoveFirst;
+	position = lastPosition;
 }

@@ -42,6 +42,6 @@ std::vector<pos> Knight::ways(piece*** desk)
 
 void Knight::Display()
 {
-	if (color == 'W') std::cout << "WK";
-	else std::cout << "BK";
+	if (color == 'W') std::cout << "WN";
+	else std::cout << "BN";
 }

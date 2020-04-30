@@ -9,9 +9,11 @@ public:
 	virtual bool move(piece*** desk, pos destination);
 	virtual void Display() = 0;
 	virtual std::vector<pos> ways(piece*** desk) = 0;
+	virtual void undoMove();
 	char GetColor() { return color; };
 protected:
 	char color; // 'W' - white 'B' - black
 	pos position;
+	pos lastPosition;
 };
 
