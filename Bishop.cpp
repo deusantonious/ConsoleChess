@@ -1,10 +1,10 @@
 #include "Bishop.h"
 
 
-std::vector<pos> Bishop::ways(piece*** desk)
+std::vector<pos> Bishop::ways(piece*** desk, pos position)
 {
 	std::vector<pos> Ways;
-	int i, j;
+	/*int i, j;
 	//up+right
 	i = position.number-1;
 	j = position.letter+1;
@@ -53,11 +53,6 @@ std::vector<pos> Bishop::ways(piece*** desk)
 		Ways.push_back(pos(j + 1, i + 1));
 		i++; j--;
 	}
+	*/
 	return Ways;
-}
-
-void Bishop::Display()
-{
-	if (color == 'W') std::cout << "WB";
-	else std::cout << "BB";
 }

@@ -2,10 +2,10 @@
 //i need void that create all pos thet i can to do and ill find in IsValid;
 
 // all ways to move void
-std::vector<pos> pawn::ways(piece*** desk)
+std::vector<pos> pawn::ways(piece*** desk, pos position)
 {
 	std::vector<pos> Ways;
-	int MaxStep;
+	/*int MaxStep;
 	if (color == 'W') {
 		if (!DidMove) MaxStep = -2;
 		else MaxStep = -1;
@@ -34,31 +34,19 @@ std::vector<pos> pawn::ways(piece*** desk)
 	if (position.letter != 7 &&
 		desk[position.number + MaxStep][position.letter + 1] != nullptr
 		&& desk[position.number + MaxStep][position.letter + 1]->GetColor() != color)
-		Ways.push_back(pos(position.letter + 2, position.number + 1 + MaxStep));
+		Ways.push_back(pos(position.letter + 2, position.number + 1 + MaxStep));*/
 	return Ways;
 }
 
-void pawn::Display()
-{
-	if (color == 'W') std::cout << "WP";
-	else std::cout << "BP";
-}
 
-bool pawn::move(piece*** desk, pos destination)
+
+bool pawn::move(piece*** desk, pos position, pos destination)
 {
-	if (IsValid(desk, destination)) {
-		DidMoveFirst = DidMove;
+	if (IsValid(desk, position, destination)) {
 		DidMove = true;
 		desk[destination.number][destination.letter] = this;
 		desk[position.number][position.letter] = nullptr;
 	}
 	else throw std::exception("Your turn is invalid!\n");
-	lastPosition = position;
-	position = destination;
-}
-
-void pawn::undoMove()
-{
-	DidMove = DidMoveFirst;
-	position = lastPosition;
+	return true;
 }

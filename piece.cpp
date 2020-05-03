@@ -1,9 +1,9 @@
 #include "piece.h"
 
-bool piece::IsValid(piece*** desk, pos destination)
+bool piece::IsValid(piece*** desk, pos position, pos destination)
 {
 
-	std::vector <pos> Aviable = this->ways(desk);
+	std::vector <pos> Aviable = this->ways(desk, position);
 	for (pos i : Aviable)
 		if (i == destination)
 			return true;
@@ -11,21 +11,18 @@ bool piece::IsValid(piece*** desk, pos destination)
 
 }
 
-bool piece::move(piece*** desk, pos destination)
+bool piece::move(piece*** desk, pos position, pos destination)
 {
 
-	if (IsValid(desk, destination)) {
+	if (IsValid(desk, position, destination)) {
 		desk[destination.number][destination.letter] = this;
 		desk[position.number][position.letter] = nullptr;
 	}
 	else throw std::exception("Your turn is invalid!\n");
-	lastPosition = position;
-	position = destination;
-	
-
+	return true;
 }
 
-void piece::undoMove()
+void piece::Display()
 {
-	position = lastPosition;
+	std::cout << color << name;
 }

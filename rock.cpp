@@ -1,10 +1,10 @@
 #include "rock.h"
 
 
-std::vector<pos> rock::ways(piece*** desk)
+std::vector<pos> rock::ways(piece*** desk, pos positon)
 {
 	std::vector<pos> Ways;
-	int i, j;
+	/*int i, j;
 	//up
 	j = position.letter;
 	for (i = position.number - 1; i >= 0; i--) {
@@ -44,35 +44,19 @@ std::vector<pos> rock::ways(piece*** desk)
 			break;
 		}
 		Ways.push_back(pos(j + 1, i + 1));
-	}
+	}*/
 	return Ways;
 }
-
-void rock::Display()
+bool rock::move(piece*** desk, pos position, pos destination)
 {
-	if (color == 'W') std::cout << "WR";
-	else std::cout << "BR";
-}
-
-bool rock::move(piece*** desk, pos destination)
-{
-	if (IsValid(desk, destination)) {
-		DidMoveFirst = DidMove;
+	if (IsValid(desk, position, destination)) {
 		DidMove = true;
 		desk[destination.number][destination.letter] = this;
 		desk[position.number][position.letter] = nullptr;
 	}
 	else throw std::exception("Your turn is invalid!\n");
-	lastPosition = position;
-	position = destination;
+	return true;
 }
-
-void rock::undoMove()
-{
-	DidMove = DidMoveFirst;
-	position = lastPosition;
-}
-
 bool rock::GetDidMove()
 {
 	return DidMove;

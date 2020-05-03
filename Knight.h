@@ -7,9 +7,8 @@ class Knight :
 	public piece
 {
 public:
-	Knight(const Knight& a) : piece(a.color, a.position) {}
-	Knight(char color, pos position) : piece(color, position) {}
-	std::vector<pos> ways(piece*** desk);
-	void Display() override;
+	Knight(char color) : piece(color) { name = 'N'; }
+	std::vector<pos> ways(piece*** desk, pos position);
+
 };
 

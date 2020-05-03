@@ -7,13 +7,10 @@
 class King : public piece
 {
 public:
-	King(const King& a) : piece(a.color, a.position) { DidMove = a.DidMove; };
-	King(char color, pos position) : piece(color, position) { DidMove = false; };
-	std::vector<pos> ways(piece*** desk);
-	void Display() override;
-	bool move(piece*** desk, pos destination) override;
-	void undoMove();
-	bool checkTest(piece*** desk);
+	King(char color) : piece(color) { DidMove = false; name = 'K'; };
+	std::vector<pos> ways(piece*** desk, pos position);
+	bool move(piece*** desk, pos position, pos destination) override;
+	bool checkTest(piece*** desk, pos position);
 private:
 	bool lastWasCastling;
 	bool DidMoveFirst;

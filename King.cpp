@@ -1,6 +1,6 @@
 #include "King.h"
 
-std::vector<pos> King::ways(piece*** desk)
+std::vector<pos> King::ways(piece*** desk, pos position)
 {
 	std::vector<pos> Ways;
 	//castling
@@ -35,8 +35,8 @@ std::vector<pos> King::ways(piece*** desk)
 				Ways.push_back(pos(position.letter + 2, position.number + 2));
 		//left
 		if (position.letter != 0)
-			if (desk[position.number + 1][position.letter + 1] == nullptr || desk[position.number + 1][position.letter + 1]->GetColor() != color)
-				Ways.push_back(pos(position.letter + 2, position.number + 2));
+			if (desk[position.number + 1][position.letter - 1] == nullptr || desk[position.number + 1][position.letter - 1]->GetColor() != color)
+				Ways.push_back(pos(position.letter, position.number + 2));
 	}
 	//up
 	if (position.number != 0) {
@@ -49,7 +49,7 @@ std::vector<pos> King::ways(piece*** desk)
 				Ways.push_back(pos(position.letter + 2, position.number));
 		//left
 		if (position.letter != 0)
-			if (desk[position.number - 1][position.letter - 1] == nullptr || desk[position.number - 1][position.letter + 1]->GetColor() != color)
+			if (desk[position.number - 1][position.letter - 1] == nullptr || desk[position.number - 1][position.letter - 1]->GetColor() != color)
 				Ways.push_back(pos(position.letter, position.number));
 	}
 	//full left
@@ -62,69 +62,49 @@ std::vector<pos> King::ways(piece*** desk)
 			Ways.push_back(pos(position.letter + 2, position.number + 1));
 	return Ways;
 }
-
-void King::Display()
+bool King::move(piece*** desk, pos position, pos destination)
 {
-	if (color == 'W') std::cout << "WK";
-	else std::cout << "BK";
-}
-
-bool King::move(piece*** desk, pos destination)
-{
-	if (IsValid(desk, destination)) {
-		DidMoveFirst = DidMove;
+	if (IsValid(desk, position, destination)) {
 		DidMove = true;
 		if (desk[destination.number][destination.letter] != nullptr && typeid(*desk[destination.number][destination.letter]) == typeid(rock)) {
 			if (destination.letter == 0) {
-				desk[destination.number][destination.letter]->move(desk, pos(4, position.number + 1));
+				desk[destination.number][destination.letter]->move(desk, pos(destination.number + 1, destination.letter + 1), pos(4, position.number + 1));
 				desk[position.number][position.letter - 2] = this;
 			}
 			else {
-				desk[destination.number][destination.letter]->move(desk, pos(6, position.number + 1));
+				desk[destination.number][destination.letter]->move(desk, pos(destination.number + 1, destination.letter + 1), pos(6, position.number + 1));
 				desk[position.number][position.letter + 2] = this;
 
 			}
-			lastPosition = destination;
 			desk[destination.number][destination.letter] = nullptr;
 			desk[position.number][position.letter] = nullptr;
 			position.letter += 2;
 			return true;
-			lastWasCastling = true;
 		}
-		lastWasCastling = false;
-		lastPosition = position;
 		desk[destination.number][destination.letter] = this;
 		desk[position.number][position.letter] = nullptr;
-		position = destination;
 	}
 	else throw std::exception("Your turn is invalid!\n");
+	return true;
 }
 
-void King::undoMove()
-{
-	DidMove = DidMoveFirst;
-	if (lastWasCastling) {
-
-	}
-	else {
-		position = lastPosition;
-	}
-}
-
-bool King::checkTest(piece*** desk)
+bool King::checkTest(piece*** desk, pos position)
 {
 	std::vector <pos> buff;
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++)
 			if (desk[i][j] != nullptr && desk[i][j]->GetColor() != color) {
-				buff = desk[i][j]->ways(desk);
+				buff = desk[i][j]->ways(desk,pos(j+1,i+1));
 				for (pos i : buff) {
-					if (position == i)
+					if (position == i) {
+						//check and mante
 						return true;
-					//to do mate check
+					}
+						
 				}
 			}
 
 	}
+	
 	return false;
 }

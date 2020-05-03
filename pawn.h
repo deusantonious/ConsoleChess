@@ -7,14 +7,10 @@ class pawn :
 	public piece
 {
 public:
-	pawn(const pawn& a) : piece(a.color, a.position) { DidMove = a.DidMove; };
-	pawn(char color, pos position) : piece(color,position) { DidMove = false; };
-	std::vector<pos> ways(piece*** desk);
-	void Display() override;
-	bool move(piece*** desk, pos destination) override;
-	void undoMove() override;
+	pawn(char color) : piece(color) { DidMove = false; name = 'P'; };
+	std::vector<pos> ways(piece*** desk, pos position);
+	bool move(piece*** desk, pos position, pos destination) override;
 private:
-	bool DidMoveFirst;
 	bool DidMove;
 };
 

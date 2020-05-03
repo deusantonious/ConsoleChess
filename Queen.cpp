@@ -1,13 +1,6 @@
 #include "Queen.h"
 
-Queen& Queen::operator=(const Queen a)
-{
-	;
-	return *this;
-	// TODO: insert return statement here
-}
-
-std::vector<pos> Queen::ways(piece*** desk)
+std::vector<pos> Queen::ways(piece*** desk, pos position)
 {
 	std::vector <pos> Ways;
 	int i, j;
@@ -100,10 +93,4 @@ std::vector<pos> Queen::ways(piece*** desk)
 		Ways.push_back(pos(j + 1, i + 1));
 	}
 	return Ways;
-}
-
-void Queen::Display()
-{
-	if (color == 'W') std::cout << "WQ";
-	else std::cout << "BQ";
 }

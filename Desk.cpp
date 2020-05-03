@@ -1,11 +1,23 @@
 ﻿#include "Desk.h"
-void Desk::FillCheckStatus()
+void Desk::CheckWhite()
 {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			if (desk[i][j] != nullptr && typeid(*desk[i][j]) == typeid(King))
-				if (desk[i][j]->GetColor() == 'W') CheckForWhite = dynamic_cast<King*>(desk[i][j])->checkTest(desk);
-				else	CheckForBlack = dynamic_cast<King*>(desk[i][j])->checkTest(desk);
+			if (desk[i][j] != nullptr && typeid(*desk[i][j]) == typeid(King) && desk[i][j]->GetColor() == 'W') {
+				CheckForWhite = dynamic_cast<King*>(desk[i][j])->checkTest(desk, pos(j + 1, i + 1));
+				break;
+			}		
+		}
+	}
+}
+void Desk::CheckBlack()
+{
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (desk[i][j] != nullptr && typeid(*desk[i][j]) == typeid(King) && desk[i][j]->GetColor() == 'B') {
+				CheckForBlack = dynamic_cast<King*>(desk[i][j])->checkTest(desk, pos(j + 1, i + 1));
+				break;
+			}
 		}
 	}
 }
@@ -13,28 +25,32 @@ Desk::Desk()
 {
 	CheckForBlack = false;
 	CheckForWhite = false;
-	try {
-		desk = new piece ** [8];
+	try
+	{
+		desk = new piece**[8];
+		for (int i = 0; i < 8; i++)
+			desk[i] = new piece * [8];
+
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				desk[i][j] = nullptr;
+
+		desk[7][4] = new King('W');
+		//creating black King
+		desk[0][4] = new King('B');
+		//creating white Queen
+		desk[7][3] = new Queen('W');
+		//creating black Queen
+		desk[0][3] = new Queen('B');
 	}
-	catch (std::exception & ex) {
+	catch (const std::exception&ex)
+	{
 		throw ex;
 	}
-
-	for (int i = 0; i < 8; i++) {
-		desk[i] = new piece*[8];
-	}
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			desk[i][j] = nullptr;
-		}
-	}
-	desk[7][4] = new King('W', pos('E', 8));
-	//creating black King
-	desk[0][4] = new King('B', pos('E', 1));
-	//creating white Queen
-	desk[7][3] = new Queen('W', pos('D', 8));
-	//creating black Queen
-	desk[0][3] = new Queen('B', pos('D', 1));
+	
+	
+	
+	
 	/*
 	//creating black pawns
 	for (int i = 0; i < 8; i++) {
@@ -73,52 +89,38 @@ Desk::Desk()
 	*/
 }
 
-Desk::Desk(const Desk& New)
+Desk::Desk(Desk& a)
 {
-	CheckForBlack = New.CheckForBlack;
-	CheckForWhite = New.CheckForWhite;
-	try {
+	try
+	{
 		desk = new piece * *[8];
-	}
-	catch (std::exception & ex) {
-		throw ex;
-	}
-
-	for (int i = 0; i < 8; i++) {
-		desk[i] = new piece * [8];
-	}
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			desk[i][j] = New.desk[i][j];
+		for (int i = 0; i < 8; i++)
+			desk[i] = new piece * [8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (a.desk[i][j] == nullptr) { desk[i][j] = nullptr; continue; }
+				if (a.desk[i][j]->name == 'P') { desk[i][j] = new pawn(a.desk[i][j]->GetColor()); continue; }
+				if (a.desk[i][j]->name == 'R') { desk[i][j] = new rock(a.desk[i][j]->GetColor()); continue; }
+				if (a.desk[i][j]->name == 'K') { desk[i][j] = new King(a.desk[i][j]->GetColor()); continue; }
+				if (a.desk[i][j]->name == 'Q') { desk[i][j] = new Queen(a.desk[i][j]->GetColor()); continue; }
+				if (a.desk[i][j]->name == 'B') { desk[i][j] = new Bishop(a.desk[i][j]->GetColor()); continue; }
+				if (a.desk[i][j]->name == 'N') { desk[i][j] = new Knight(a.desk[i][j]->GetColor()); continue; }
+			}
 		}
+	}
+	catch (const std::exception & ex)
+	{
+		throw ex;
 	}
 }
 
-Desk Desk::operator=(const Desk& second)
-{
-	CheckForBlack = second.CheckForBlack;
-	CheckForWhite = second.CheckForWhite;
-	try {
-		desk = new piece * *[8];
-	}
-	catch (std::exception & ex) {
-		throw ex;
-	}
-
-	for (int i = 0; i < 8; i++) {
-		desk[i] = new piece * [8];
-	}
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			desk[i][j] = second.desk[i][j];
-		}
-	}
-}
 
 Desk::~Desk()
 {
 	for (int i = 0; i < 8; i++) {
-		delete[] desk[i];
+		for (int j = 0; j < 8; j++)
+			if (desk[i][j] != nullptr) delete desk[i][j];
+		delete desk[i];
 	}
 	delete desk;
 }
@@ -126,73 +128,43 @@ Desk::~Desk()
 
 bool Desk::PreValidation(char player, pos first)
 {
-	if (desk[first.number][first.letter] == nullptr) throw std::exception("Selected position is empty!\n");
-	if (player != desk[first.number][first.letter]->GetColor()) throw std::exception("Selected position must contein your piece!\n");
+	if (desk[first.number][first.letter] == nullptr) throw std::exception("Selected position is empty");
+	if (player != desk[first.number][first.letter]->GetColor()) throw std::exception("Selected position must contain your piece!\n");
 	return true;
 }
 
 char Desk::makeTurn(char player, pos first, pos second)
 {
-	//allocating memmory for tmp desk
-	piece*** buff;
-	try {
-		buff = new piece * *[8];
-		for (int i = 0; i < 8; i++) {
-			buff[i] = new piece * [8];
-		}
-	}
-	catch (std::exception & ex) {
-		throw ex;
-	}
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			buff[i][j] = desk[i][j];
-		}
-	}
-	///////trying to do move
-	//if throw
-	buff[first.number][first.letter]->move(buff, second);
-	//testing check after moove
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			if (buff[i][j] != nullptr && typeid(*buff[i][j]) == typeid(King))
-				if (buff[i][j]->GetColor() == 'W') {
-					if (dynamic_cast<King*>(buff[i][j])->checkTest(buff) == false)
-						CheckForWhite = false;
-					else
-						CheckForWhite = true;
-				}
-				else
-					if (dynamic_cast<King*>(buff[i][j])->checkTest(buff) == false)
-						CheckForBlack = false;
-					else
-						CheckForBlack = true;
-		}
-	}
-
-
-	//throwing ecxeption if we have check
-	if (CheckForBlack == false && CheckForWhite == false) {
-		for (int i = 0; i < 8; i++) {
-			delete[] desk[i];
-		}
-		delete desk;
-		desk = buff;
-		//////saving positions
-		return '0';
+	//make copy
+	Desk buff(*this);
+	//make move in copy
+	buff.makeTestTurn(player, first, second);
+	if (player == 'W') {
+		buff.CheckWhite();
+		if (buff.CheckForWhite == true) throw std::exception("U cant do this move! Check!\n");
+		CheckForWhite = false;
 	}
 	else {
-		for (int i = 0; i < 8; i++) {
-			delete[] buff[i];
-		}
-		delete buff;
-		FillCheckStatus();
-		throw std::exception("Your turn is invalid! Check!\n");
+		buff.CheckBlack();
+		if (buff.CheckForBlack == true) throw std::exception("U cant do this move! Check!\n");
+		CheckForBlack = false;
 	}
-
-	//check mate
-	//return '1';
+	makeTestTurn(player, first, second);
+	if (player == 'W') {
+		CheckBlack();
+	}
+	else {
+		CheckWhite();
+	}
+	return'0';
 }
+
+void Desk::makeTestTurn(char player, pos first, pos second)
+{
+	desk[first.number][first.letter]->move(desk, first, second);
+}
+
+
 
 void Desk::view()
 {
@@ -200,18 +172,15 @@ void Desk::view()
 	for (int i = 0; i < 8; i++) {
 		std::cout << i + 1 << " |";
 		for (int j = 0; j < 8; j++) {
-			if (desk[i][j] == nullptr)
-				std::cout << "  |";
-			else {
+			if (desk[i][j] != nullptr)
 				desk[i][j]->Display();
-				std::cout << "|";
-			}
-			
+			else
+				std::cout << "  ";
+			std::cout << "|";
 		}
 		std::cout << "\n";
 	}
 	std::cout << "   A  B  C  D  E  F  G  H\n";
-	FillCheckStatus();
 	std::cout << std::setw(18) << "White\n";
 	if (CheckForWhite == true) std::cout << "Check for white!\n";
 	if (CheckForBlack == true) std::cout << "Check for black!\n";

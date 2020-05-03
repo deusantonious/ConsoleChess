@@ -12,20 +12,22 @@
 #include "King.h"
 #include "Bishop.h"
 #include "Queen.h"
+#include "piece.h"
 class Desk
 {
 private:
-	piece ***desk;
+	piece*** desk;
 	bool CheckForWhite;
 	bool CheckForBlack;
-	void FillCheckStatus();
+	void CheckWhite();
+	void CheckBlack();
 public: 
 	Desk();
-	Desk(const Desk& New);
-	Desk operator =(const Desk& second);
+	Desk(Desk& a);
 	~Desk();
 	bool PreValidation(char player, pos first);
 	char makeTurn(char player, pos first, pos second);
+	void makeTestTurn(char player, pos first, pos second);
 	void view();
 };
 

@@ -1,9 +1,9 @@
 #include "Knight.h"
 
-std::vector<pos> Knight::ways(piece*** desk)
+std::vector<pos> Knight::ways(piece*** desk, pos position)
 {
 	std::vector<pos> Ways;
-	int letter = position.letter;
+	/*int letter = position.letter;
 	int number = position.number;
 	if (letter - 1 >= 0 && number - 2 >= 0)
 		if (desk[number - 2][letter - 1] == nullptr || desk[number - 2][letter - 1]->GetColor() != color)
@@ -36,12 +36,8 @@ std::vector<pos> Knight::ways(piece*** desk)
 	if (letter + 1 <= 7 && number + 2 <= 7)
 		if (desk[number + 2][letter + 1] == nullptr || desk[number + 2][letter + 1]->GetColor() != color)
 			Ways.push_back(pos(letter + 2, number + 3));
-	//
+	//*/
 	return Ways;
+	
 }
 
-void Knight::Display()
-{
-	if (color == 'W') std::cout << "WN";
-	else std::cout << "BN";
-}
